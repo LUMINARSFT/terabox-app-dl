@@ -115,17 +115,18 @@ export default function Home() {
     }
   );
   
-  useEffect(() => {
-    if (data || error) {
-      setdisableInput(false);
-      setLink("");
-    }
-    if (err || error) {
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
-  }, [err, error, data]);
+useEffect(() => {
+  const { input } = router.query;
+  if (input && typeof input === "string") {
+    setLink(input);
+  }
+
+  // Update URL when link state changes
+  const url = new URL(window.location.href);
+  url.searchParams.set("input", link);
+  window.history.replaceState({}, "", url.toString());
+}, [router.query, link]);
+
 
   async function Submit() {
     setError("");
