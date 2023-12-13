@@ -99,12 +99,6 @@ function checkUrlPatterns(url: string) {
   return false;
 }
 
-export default function Home() {
-  const [link, setLink] = useState("");
-  const [err, setError] = useState("");
-  const [token, setToken] = useState("");
-  const [disableInput, setdisableInput] = useState(false);
-
   const { data, error, isLoading } = useSWR(
     token ? [`/api?data=${encodeURIComponent(token)}`] : null,
     ([url]) => fetchWithToken(url),
@@ -114,10 +108,10 @@ export default function Home() {
       revalidateOnReconnect: false,
     }
   );
-  
+
   useEffect(() => {
     if (data || error) {
-      setdisableInput(false);
+      setDisableInput(false);
       setLink("");
     }
     if (err || error) {
@@ -127,9 +121,14 @@ export default function Home() {
     }
   }, [err, error, data]);
 
+  useEffect(() => {
+    // Set the initial value of the link state with the query parameter
+    setLink(input || "");
+  }, [input]);
+
   async function Submit() {
     setError("");
-    setdisableInput(true);
+    setDisableInput(true);
     if (!link) {
       setError("Please enter a link");
       return;
