@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,6 +101,7 @@ function checkUrlPatterns(url: string) {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [link, setLink] = useState("");
   const [err, setError] = useState("");
   const [token, setToken] = useState("");
